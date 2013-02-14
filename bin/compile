@@ -54,6 +54,7 @@ mkdir -p bin
 ln -s /app/php/bin/php bin/php
 
 # debugging
+pwd -P
 ls -la
 
 # check if we have Composer dependencies and vendors are not bundled
