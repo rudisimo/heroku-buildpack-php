@@ -1,8 +1,11 @@
-#!/usr/bin/env bash -v
+#!/usr/bin/env bash
 # bin/compile <build-dir> <cache-dir>
 
 # fail fast
 set -e
+
+# increase verbosity
+set -v
 
 # config
 APACHE_VERSION="2.2.22"
