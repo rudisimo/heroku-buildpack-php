@@ -4,6 +4,9 @@
 # fail fast
 set -e
 
+# verbosity
+set -v
+
 # config
 APACHE_VERSION="2.2.22"
 APACHE_PATH="apache"
