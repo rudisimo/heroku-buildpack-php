@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env bash -v
 # bin/compile <build-dir> <cache-dir>
 
 # fail fast
