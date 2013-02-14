@@ -58,7 +58,7 @@ pwd -P
 ls -la
 
 # check if we have Composer dependencies and vendors are not bundled
-if [ -f www/composer.json ] && [ ! -d www/vendor ]; then
+if [ ! -f www/composer.json ] && [ ! -d www/vendor ]; then
   GIT_DIR_ORIG=$GIT_DIR
   unset GIT_DIR
   echo "-----> Installing Composer dependencies"
