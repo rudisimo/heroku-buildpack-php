@@ -67,7 +67,7 @@ LD_LIBRARY_PATH="$BUILD_DIR/php/ext:$BUILD_DIR/php/lib/php/extensions/no-debug-n
 if [ -f www/composer.json ] && [ ! -d www/vendor ]; then
   EXT_PATH="\"${BUILD_DIR}/php/lib/php/extensions/no-debug-non-zts-20090626\""
   EXT_PATH="${EXT_PATH//\//\\/}"
-  sed -e "s/^extension_dir = .*/extension_dir = ${EXT_PATH}/" $LP_DIR/conf/php.ini
+  sed -e -i "s/^extension_dir = .*/extension_dir = ${EXT_PATH}/" $LP_DIR/conf/php.ini
   GIT_DIR_ORIG=$GIT_DIR
   unset GIT_DIR
   echo "-----> Installing Composer dependencies"
@@ -77,6 +77,7 @@ if [ -f www/composer.json ] && [ ! -d www/vendor ]; then
   cd $BUILD_DIR
   rm www/composer.phar
   export GIT_DIR=$GIT_DIR_ORIG
+  sed -e -i "s/^extension_dir = .*//" $LP_DIR/conf/php.ini
 fi
 
 cat >>boot.sh <<EOF
