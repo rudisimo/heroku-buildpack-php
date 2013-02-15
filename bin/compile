@@ -4,9 +4,6 @@
 # fail fast
 set -e
 
-# verbosity
-set -v
-
 # config
 APACHE_VERSION="2.2.22"
 APACHE_PATH="apache"
@@ -50,20 +47,20 @@ curl --silent --max-time 60 --location "$PHP_URL" | tar xz
 
 # update config files
 cp $LP_DIR/conf/httpd.conf $APACHE_PATH/conf
-cp $LP_DIR/conf/php.ini php
+cp $LP_DIR/conf/php.ini $PHP_DIR
 
 # make php available on bin
 mkdir -p bin
 ln -s /app/php/bin/php bin/php
 
 # check if we have Composer dependencies and vendors are not bundled
-if [ -f www/composer.json ] && [ ! -d www/vendor ]; then
-  EXT_PATH="\"${BUILD_DIR}/php/lib/php/extensions/no-debug-non-zts-20090626\""
-  EXT_PATH="${EXT_PATH//\//\\/}"
-  sed -e "s/^extension_dir = .*/extension_dir = ${EXT_PATH}/" $LP_DIR/conf/php.ini > $LP_DIR/conf/php.ini-composer
-  LD_LIBRARY_PATH="$BUILD_DIR/php/ext:$LD_LIBRARY_PATH" $BUILD_DIR/php/bin/php -c $LP_DIR/conf/php.ini-composer -i
+if [ -f www/composer.json ] && [ ! -f www/vendor/autoload.php ]; then
   GIT_DIR_ORIG=$GIT_DIR
   unset GIT_DIR
+  EXT_DIR="\"${BUILD_DIR}/php/lib/php/extensions/no-debug-non-zts-20090626\""
+  EXT_DIR="${EXT_PATH//\//\\/}"
+  sed -e "s/^extension_dir = .*/extension_dir = ${EXT_DIR}/" $LP_DIR/conf/php.ini > $LP_DIR/conf/php.ini-composer
+  LD_LIBRARY_PATH="$BUILD_DIR/php/ext:$LD_LIBRARY_PATH" $BUILD_DIR/php/bin/php -c $LP_DIR/conf/php.ini-composer -i
   echo "-----> Installing Composer dependencies"
   curl --silent --max-time 60 --location "$COMPOSER_URL" > www/composer.phar
   cd www
