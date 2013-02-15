@@ -54,7 +54,7 @@ if [ -f www/composer.json ] && [ ! -f www/vendor/autoload.php ]; then
   EXT_PATH="\"${BUILD_DIR}/php/lib/php/extensions/no-debug-non-zts-20090626\""
   EXT_PATH="${EXT_PATH//\//\\/}"
   sed -e "s/^extension_dir = .*/extension_dir = ${EXT_PATH}/" $LP_DIR/conf/php.ini > $LP_DIR/conf/php.ini-composer
-  #LD_LIBRARY_PATH="$BUILD_DIR/php/ext:$LD_LIBRARY_PATH" $BUILD_DIR/php/bin/php -c $LP_DIR/conf/php.ini-composer -i
+  LD_LIBRARY_PATH="$BUILD_DIR/php/ext:$LD_LIBRARY_PATH" $BUILD_DIR/php/bin/php -c $LP_DIR/conf/php.ini-composer -i | grep configure
   echo "-----> Installing Composer dependencies"
   curl --silent --max-time 60 --location "$COMPOSER_URL" > www/composer.phar
   cd www
