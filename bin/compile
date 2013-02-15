@@ -18,12 +18,6 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 LP_DIR=`cd $(dirname $0); cd ..; pwd`
 
-# debugging
-echo "BIN_DIR: $BIN_DIR"
-echo "BUILD_DIR: $BUILD_DIR"
-echo "CACHE_DIR: $CACHE_DIR"
-echo "LP_DIR: $LP_DIR"
-
 # include .files when moving things around
 shopt -s dotglob
 
@@ -47,7 +41,7 @@ curl --silent --max-time 60 --location "$PHP_URL" | tar xz
 
 # update config files
 cp $LP_DIR/conf/httpd.conf $APACHE_PATH/conf
-cp $LP_DIR/conf/php.ini $PHP_DIR
+cp $LP_DIR/conf/php.ini $PHP_PATH
 
 # make php available on bin
 mkdir -p bin
@@ -57,10 +51,10 @@ ln -s /app/php/bin/php bin/php
 if [ -f www/composer.json ] && [ ! -f www/vendor/autoload.php ]; then
   GIT_DIR_ORIG=$GIT_DIR
   unset GIT_DIR
-  EXT_DIR="\"${BUILD_DIR}/php/lib/php/extensions/no-debug-non-zts-20090626\""
-  EXT_DIR="${EXT_PATH//\//\\/}"
-  sed -e "s/^extension_dir = .*/extension_dir = ${EXT_DIR}/" $LP_DIR/conf/php.ini > $LP_DIR/conf/php.ini-composer
-  LD_LIBRARY_PATH="$BUILD_DIR/php/ext:$LD_LIBRARY_PATH" $BUILD_DIR/php/bin/php -c $LP_DIR/conf/php.ini-composer -i
+  EXT_PATH="\"${BUILD_DIR}/php/lib/php/extensions/no-debug-non-zts-20090626\""
+  EXT_PATH="${EXT_PATH//\//\\/}"
+  sed -e "s/^extension_dir = .*/extension_dir = ${EXT_PATH}/" $LP_DIR/conf/php.ini > $LP_DIR/conf/php.ini-composer
+  #LD_LIBRARY_PATH="$BUILD_DIR/php/ext:$LD_LIBRARY_PATH" $BUILD_DIR/php/bin/php -c $LP_DIR/conf/php.ini-composer -i
   echo "-----> Installing Composer dependencies"
   curl --silent --max-time 60 --location "$COMPOSER_URL" > www/composer.phar
   cd www
