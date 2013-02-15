@@ -8,7 +8,7 @@ set -e
 APACHE_VERSION="2.2.22"
 APACHE_PATH="apache"
 APACHE_URL="http://dl.dropbox.com/u/37751086/apache-${APACHE_VERSION}.tar.gz"
-PHP_VERSION="5.3.10"
+PHP_VERSION="5.3.21"
 PHP_PATH="php"
 PHP_URL="http://dl.dropbox.com/u/37751086/php-${PHP_VERSION}.tar.gz"
 COMPOSER_URL="http://getcomposer.org/composer.phar"
