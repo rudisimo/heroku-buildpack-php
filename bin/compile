@@ -65,8 +65,9 @@ LD_LIBRARY_PATH="$BUILD_DIR/php/ext:$BUILD_DIR/php/lib/php/extensions/no-debug-n
 
 # check if we have Composer dependencies and vendors are not bundled
 if [ -f www/composer.json ] && [ ! -d www/vendor ]; then
-  EXT_PATH="${BUILD_DIR}/php/lib/php/extensions/no-debug-non-zts-20090626"
-  sed -r -u "s/^extension_dir = .*/extension_dir = \"${EXT_PATH}\"/" $LP_DIR/conf/php.ini
+  EXT_PATH="\"${BUILD_DIR}/php/lib/php/extensions/no-debug-non-zts-20090626\""
+  EXT_PATH="${EXT_PATH//\//\\/}"
+  sed -e "s/^extension_dir = .*/extension_dir = ${EXT_PATH}/" $LP_DIR/conf/php.ini
   GIT_DIR_ORIG=$GIT_DIR
   unset GIT_DIR
   echo "-----> Installing Composer dependencies"
