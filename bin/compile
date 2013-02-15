@@ -57,12 +57,13 @@ if [ -f www/composer.json ] && [ ! -f www/vendor/autoload.php ]; then
   echo "-----> Installing Composer dependencies"
   curl --silent --max-time 60 --location "$COMPOSER_URL" > www/composer.phar
   cd www
-  LD_LIBRARY_PATH="$BUILD_DIR/php/ext::$LD_LIBRARY_PATH" $BUILD_DIR/php/bin/php -c $LP_DIR/conf/php.ini-composer composer.phar install --prefer-source
+  LD_LIBRARY_PATH="$BUILD_DIR/php/ext:$LD_LIBRARY_PATH" $BUILD_DIR/php/bin/php -c $LP_DIR/conf/php.ini-composer composer.phar install --prefer-source
   cd $BUILD_DIR
   rm www/composer.phar
   export GIT_DIR=$GIT_DIR_ORIG
 fi
 
+# create the boot script
 cat >>boot.sh <<EOF
 for var in \`env|cut -f1 -d=\`; do
   echo "PassEnv \$var" >> /app/apache/conf/httpd.conf;
@@ -76,7 +77,6 @@ export PHP_INI_SCAN_DIR=/app/www
 echo "Launching apache"
 exec /app/apache/bin/httpd -DNO_DETACH
 EOF
-
 chmod +x $BUILD_DIR/boot.sh
 
 # clean the cache
